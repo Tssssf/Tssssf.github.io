@@ -1,0 +1,462 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>多人学生管理系统 | 明月光</title>
+<link rel="shortcut icon" href="https://tssssf.github.io/favicon.ico?v=1584943028346">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://tssssf.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="多人学生管理系统 | 明月光 - Atom Feed" href="https://tssssf.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="#include&lt;stdio.h&gt;
+#include&lt;string.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;process.h&gt;
+#include&lt;windows...." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://tssssf.github.io">
+  <img class="avatar" src="https://tssssf.github.io/images/avatar.png?v=1584943028346" alt="">
+  </a>
+  <h1 class="site-title">
+    明月光
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="https://www.zhihu.com/people/45d9c027531691191a1075887efc2c18" target="_blank">
+          <i class="ri-zhihu-line"></i>
+        </a>
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              多人学生管理系统
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-03-23
+              </span>
+              <span>
+                8 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <pre><code>#include&lt;stdio.h&gt;
+#include&lt;string.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;process.h&gt;
+#include&lt;windows.h&gt;
+
+FILE *fp;
+int i=0,w=0;		//循环变量
+char pw[256][20];   //验证用户输入
+char pa[20];   //用户输入密码
+char *x=&quot;-&quot;;    //定义退出字符
+
+struct student{
+    char name[10];
+    char gender[10];
+    char age[10];
+    char TEL[13];
+}class01[256];
+
+void menu()
+{
+    system(&quot;cls&quot;);
+    printf(&quot;\n\t欢迎使用学生管理系统 3.5.1\n&quot;);
+    printf(&quot;\n\t\t请选择下列选项.\n&quot;);
+    printf(&quot;\n\t\t学生名单.          L\n&quot;);
+    printf(&quot;\n\t\t添加学生.          A\n&quot;);
+    printf(&quot;\n\t\t查找学生.          F\n&quot;);
+    printf(&quot;\n\t\t删除学生.          D\n&quot;);
+    printf(&quot;\n\t\t退出系统.          Q\n&quot;);
+ }
+void index()    //首页提示信息
+{
+    printf(&quot;\n\t如果你是第一次使用该系统，请为它创建私人密码！\n&quot;);
+    printf(&quot;\n\t\t  请选择选项.\n&quot;);
+    printf(&quot;\n\t\t  创建我的密码.         C\n&quot;);
+    printf(&quot;\n\t\t  登录管理系统.         L\n&quot;);
+    printf(&quot;\n\t\t&quot;);
+}
+void create()     //首页时的创建用户
+{
+    char pas[20];
+    fp=fopen(&quot;Password.txt&quot;,&quot;a&quot;);
+    printf(&quot;\n\t\t请输入你的私人密码: &quot;);
+    scanf(&quot;%s&quot;,&amp;pas);
+    fputs(pas,fp);
+    fputc('\n',fp);
+    fclose(fp);
+    printf(&quot;\n\t\t创建成功!&quot;);
+    Sleep(1500);
+    system(&quot;cls&quot;);
+    index();
+    printf(&quot;\n\t\t请重新选择选项!\n\t\t&quot;);
+
+ }
+int load()    //首页登录时的初始化，用于验证密码
+{
+
+    fp=fopen(&quot;Password.txt&quot;,&quot;r&quot;);
+    int q=0;
+    for(q=0;q&lt;256;q++)   //读取文件内的密码
+            fgets(pw[q],20,fp);
+
+    printf(&quot;\n\t\t请输入你的私人密码: &quot;);
+    scanf(&quot;%s&quot;,&amp;pa);    //输入登录密码
+
+    for(q=0;q&lt;256;q++)
+    {
+        pw[q][strlen(pa)]='\0';
+        if(strcmp(pw[q],pa)==0)
+        {
+            printf(&quot;\n\t\t登录成功！\n\n\t\t请稍后...&quot;);
+            Sleep(2500);
+            return 1;
+            break;
+        }
+     }
+     fclose(fp);
+}
+
+void buf(char k[100],int n)  //数组的多余部分用空格补充
+{
+    int y=strlen(k);
+    for(y;y&lt;n;y++)
+        k[y]=' ';
+    k[n-1]='\0';
+}
+void list()            //// 将每份数据读取到指定结构体的变量中
+{
+    for(i=0;i&lt;256;i++)
+    {
+        printf(&quot;\n\t\t%s%s%s%s\n&quot;,class01[i].name,class01[i].gender,class01[i].age,class01[i].TEL);
+        if(strlen(class01[i].name)&lt;2)
+            break;
+    }
+    printf(&quot;\t\t你当前有 %d 位学生&quot;,i);
+}
+
+void find()
+{
+    printf(&quot;\n\t\t请输入学生的名字: &quot;);
+    int p=0;
+    char fn[10];
+    scanf(&quot;%s&quot;,&amp;fn);
+    buf(fn,10);
+    fn[9]='\0';
+    printf(&quot;\n\t\t信息如下.\n&quot;);
+    for(i=0;i&lt;256;i++)
+    {
+        if(strcmp(fn,class01[i].name)==0)
+            printf(&quot;\n\t\t%s%s%s%s&quot;,class01[i].name,class01[i].gender,class01[i].age,class01[i].TEL);
+        if(strlen(class01[i].name)&lt;2)
+            break;
+    }
+    if(i==256)
+        printf(&quot;\n\t\t没有找到这个学生，请检查是否输入错误，再重新查找!\n&quot;);
+ }
+void delate()
+{
+    printf(&quot;\n\t\t请输入你想要删除学生的名字: &quot;);
+    char fn[10];
+    int e=0;
+    scanf(&quot;%s&quot;,&amp;fn);
+    buf(fn,10);
+    fn[9]='\0';
+    for(i=0;i&lt;256;i++)
+    {
+        if(strcmp(fn,class01[i].name)==0)
+        {
+            printf(&quot;\n\t\t信息如下.\n&quot;);
+            printf(&quot;\n\t\t%s%s%s%s&quot;,class01[i].name,class01[i].gender,class01[i].age,class01[i].TEL);
+            printf(&quot;\n\n\t\t确定删除? 【Y or N】\n&quot;);
+            printf(&quot;\t\t&quot;);
+            char c;
+            scanf(&quot;%s&quot;,&amp;c);
+            if(c=='Y')
+            {
+                e=i;
+                for(e;e&lt;256;e++)
+                    class01[e]=class01[e+1];
+                printf(&quot;\t\t已删除&quot;);
+                break;
+            }
+            if(c=='N')
+            {
+                printf(&quot;\n\t\t未删除&quot;);
+                break;
+            }
+        }
+    }
+    if(i==256)
+        printf(&quot;\n\t\t没有找到这个学生，请检查是否输入错误，再重新查找!\n&quot;);
+}
+void wif()              //    rewrite in file     写入文件
+{
+    fp=fopen(pa,&quot;w&quot;);
+    for(i=0;i&lt;256;i++)
+    {
+        fputs(class01[i].name,fp);
+        fputs(class01[i].gender,fp);
+        fputs(class01[i].age,fp);
+        fputs(class01[i].TEL,fp);
+        fputc('\n',fp);
+
+        if(strlen(class01[i].name)&lt;2)    //读取有限列表 ,为空时跳出循环
+            break;
+    }
+    fclose(fp);
+ }
+
+void init()       //数据初始化       读取文件内的所有数据
+{
+    fp=fopen(pa,&quot;r&quot;);
+    memset(&amp;class01,'\0',sizeof(class01));
+    w=0;
+    while(w&lt;256)
+    {
+        fgets(class01[w].name,10,fp);
+        fgets(class01[w].gender,10,fp);
+        fgets(class01[w].age,10,fp);
+        fgets(class01[w].TEL,13,fp);
+        fgetc(fp);    //读取回车字符
+
+        if(strlen(class01[w].name)&lt;2)    //读取有限列表 ,为空时跳出循环
+            break;
+        w++; 					//记录成员个数
+    }
+    fclose(fp);
+}
+void add()    //将用户输入按固定格式写入文件
+{
+    if((fp=fopen(pa,&quot;a&quot;))==NULL)
+        printf(&quot;\n\t\t打开文件失败!\n&quot;);
+
+    for(w;w&lt;256;w++)
+    {
+        printf(&quot;\n\t\t请输入学生的名字 : &quot;);
+        scanf(&quot;%s&quot;,class01[w].name);
+        buf(class01[w].name,10);
+
+        printf(&quot;\n\t\t        学生性别 : &quot;);
+        scanf(&quot;%s&quot;,class01[w].gender);
+        buf(class01[w].gender,10);
+
+        printf(&quot;\n\t\t        学生年龄 : &quot;);
+        scanf(&quot;%s&quot;,class01[w].age);
+        buf(class01[w].age,10);
+
+        printf(&quot;\n\t\t        学生电话 : &quot;);
+        scanf(&quot;%s&quot;,class01[w].TEL);
+        buf(class01[w].TEL,13);
+
+        printf(&quot;\n\t\t按 '+' 继续 或者 '-' 退出\n\n\t\t&quot;);
+        char m;
+        scanf(&quot;%s&quot;,&amp;m);
+        if(m==(*x))
+            break;
+    }
+    fclose(fp);
+}
+
+int main()
+{
+    index();
+    char choice;
+    int i=0;
+    ft:
+    scanf(&quot;%s&quot;,&amp;choice);    //登录系统
+    if(choice=='C')
+    {
+        create();
+        goto ft;
+    }
+    else if(choice=='L')
+        i=load();
+    else
+    {
+        printf(&quot;\n\t\t输入错误!!\n\n\t\t请重新选择 !!\n\t\t&quot;);
+        goto ft;
+    }
+
+    if(i==1)      //进入学生管理系统
+    {
+        menu();
+        char ch;
+
+        init();
+        flag:
+        printf(&quot;\n\t\t&quot;);
+        scanf(&quot;%s&quot;,&amp;ch);
+        if(ch=='A')
+        {
+            add();
+            goto flag;
+        }
+        else if(ch=='L')
+        {
+            list();
+            goto flag;
+        }
+        else if(ch=='F')
+        {
+            find();
+            goto flag;
+        }
+        else if(ch=='D')
+        {
+            delate();
+            goto flag;
+        }
+        else if(ch=='Q')
+        {
+            wif();
+            printf(&quot;\n\t\t数据保存中...&quot;);
+            Sleep(2500);
+            exit(0);
+        }
+        else
+        {
+            printf(&quot;\n\t\t输入错误,请重试!\n&quot;);
+            goto flag;
+        }
+    }
+    else
+    {
+        printf(&quot;\n\t\t输入错误，请重新选择\n\t\t&quot;);
+        goto ft;
+    }
+    return 0;
+ }
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://tssssf.github.io/ce-shi-wen-dang/">
+              <h3 class="post-title">
+                测试文档
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  <a href="mqqwpa://im/chat?chat_type=wpa&uin=2033471349&version=1&src_type=web&web_src=oicqzone.com">QQ</a>
+  <a class="rss" href="https://tssssf.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
