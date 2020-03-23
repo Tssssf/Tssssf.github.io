@@ -976,7 +976,11 @@ td {
 }
 
       .main {
-        max-width: 97%;
+        max-width: 99%;
+      }
+    
+      .post-detail .post .post-content p {
+        font-size: 13px;
       }
     
       .post-container .post .post-title {
